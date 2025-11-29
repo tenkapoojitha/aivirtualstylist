@@ -1,6 +1,5 @@
 Flask==3.1.2
 flask-cors==6.0.1
-mediapipe==0.10.14
 opencv-python==4.9.0.80
 opencv-contrib-python==4.9.0.80
 numpy==1.23.5
@@ -9,3 +8,4 @@ deepface==0.0.93
 Pillow==10.3.0
 gunicorn==23.0.0
 Werkzeug==3.1.3
+
