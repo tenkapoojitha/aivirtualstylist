@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Virtual Stylist | Beauty & Fashion AI</title>
+
+  <!-- Google Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fff0f6, #ffe5ec);
+      color: #333;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      padding: 25px 0;
+      background: linear-gradient(135deg, #ff7eb3, #ff4f87);
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .hero {
+      text-align: center;
+      margin-top: 60px;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 700;
+      color: #ff4f87;
+    }
+
+    .hero p {
+      margin-top: 10px;
+      color: #555;
+      font-size: 18px;
+      max-width: 600px;
+      margin-inline: auto;
+    }
+
+    .upload-box {
+      border: 3px dashed #ff7eb3;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      margin-top: 40px;
+      width: 80%;
+      max-width: 500px;
+      text-align: center;
+      transition: 0.3s ease;
+      animation: fadeInUp 1.3s ease-in-out;
+    }
+
+    .upload-box:hover {
+      transform: scale(1.03);
+      background: #fff5fa;
+      box-shadow: 0 5px 20px rgba(255, 118, 157, 0.3);
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 14px 35px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #ff7eb3, #ff4f87);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 118, 157, 0.5);
+    }
+
+    input[type="file"] { display: none; }
+
+    .choose-btn {
+      display: inline-block;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #fcb0d4, #ff6fa1);
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .choose-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 8px 25px rgba(255, 118, 157, 0.4);
+    }
+
+    .loading {
+      display: none;
+      margin-top: 20px;
+      font-weight: 500;
+      color: #ff4f87;
+      font-size: 16px;
+    }
+
+    .loading i {
+      font-size: 22px;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+    }
+
+    .results {
+      margin: 50px auto;
+      width: 85%;
+      max-width: 800px;
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0px 10px 25px rgba(255, 118, 157, 0.2);
+      display: none;
+      animation: fadeInUp 1.3s ease-in-out;
+    }
+
+    .results h3 {
+      text-align: center;
+      color: #ff4f87;
+      margin-bottom: 20px;
+      font-size: 26px;
+    }
+
+    .results ul {
+      list-style: none;
+      padding: 0;
+      line-height: 1.8;
+      font-size: 17px;
+    }
+
+    .results li strong { color: #ff4f87; }
+
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 15px;
+      margin-top: auto;
+      background: linear-gradient(135deg, #ff7eb3, #ff4f87);
+      color: white;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>💄 AI Virtual Stylist 👗</header>
+
+  <section class="hero">
+    <h1>Discover Your Perfect Look</h1>
+    <p>Upload your photo to get personalized makeup, dress, jewelry, hairstyle, and skincare recommendations powered by AI.</p>
+  </section>
+
+  <div class="upload-box">
+    <h2>📷 Upload Your Photo</h2>
+    <p>AI will analyze your face, hair, skin, and body features instantly.</p>
+    <form id="upload-form">
+      <input id="file-upload" type="file" accept="image/*" />
+      <button type="button" class="choose-btn" id="chooseBtn"><i class="ri-image-add-line"></i> Choose Image</button>
+      <br>
+      <button class="btn" type="submit"><i class="ri-sparkling-2-fill"></i> Analyze My Style</button>
+      <div class="loading" id="loading"><i class="ri-loader-4-line"></i> Analyzing your style...</div>
+    </form>
+  </div>
+
+  <div class="results" id="results">
+    <h3>💅 Your Personalized Recommendations</h3>
+    <ul id="results-list"></ul>
+  </div>
+
+  <footer>© 2025 AI Virtual Stylist | Designed with ❤️ by You</footer>
+
+  <!-- ✅ FIXED SCRIPT START -->
+  <script>
+    const form = document.getElementById('upload-form');
+    const fileInput = document.getElementById('file-upload');
+    const chooseBtn = document.getElementById('chooseBtn');
+    const resultsDiv = document.getElementById('results');
+    const resultsList = document.getElementById('results-list');
+    const loading = document.getElementById('loading');
+
+    chooseBtn.addEventListener('click', () => fileInput.click());
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const file = fileInput.files[0];
+      if (!file) return alert("Please select a photo first!");
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      loading.style.display = 'block';
+      resultsDiv.style.display = 'none';
+
+      try {
+        const response = await fetch('/analyze', { method: 'POST', body: formData });
+        const data = await response.json();
+        loading.style.display = 'none';
+
+        if (data.error) {
+          alert(data.error);
+          return;
+        }
+
+        const faceType = data.face_type || "Not detected";
+        const bodyType = data.body_type || "Not detected";
+        const hairTexture = data.hair_texture || "Not detected";
+        const hairType = data.hair_type || "Not detected";
+        const skinTone = data.skin_tone || "Not detected";
+        const skinType = data.skin_type || "Not detected";
+        const undertone = data.undertone || "Not detected";
+
+        const rec = data.recommendations || {};
+        const makeupData = data.makeup_shades || rec.makeup || {}; // ✅ fixed
+
+        let makeup = "No shades found";
+
+        if (makeupData && typeof makeupData === "object" && Object.keys(makeupData).length > 0) {
+          const lipstick = Array.isArray(makeupData.Lipstick) ? makeupData.Lipstick.join(", ") : makeupData.Lipstick;
+          const foundation = Array.isArray(makeupData.Foundation) ? makeupData.Foundation.join(", ") : makeupData.Foundation;
+          const concealer = Array.isArray(makeupData.Concealer) ? makeupData.Concealer.join(", ") : makeupData.Concealer;
+          const contour = Array.isArray(makeupData.Contour) ? makeupData.Contour.join(", ") : makeupData.Contour;
+          const blush = Array.isArray(makeupData.Blush) ? makeupData.Blush.join(", ") : makeupData.Blush;
+          const eyeshadow = Array.isArray(makeupData.Eyeshadow) ? makeupData.Eyeshadow.join(", ") : makeupData.Eyeshadow;
+
+          makeup = `
+            <ul>
+              <li><strong>Lipstick:</strong> ${lipstick || "N/A"}</li>
+              <li><strong>Foundation:</strong> ${foundation || "N/A"}</li>
+              <li><strong>Concealer:</strong> ${concealer || "N/A"}</li>
+              <li><strong>Contour:</strong> ${contour || "N/A"}</li>
+              <li><strong>Blush:</strong> ${blush || "N/A"}</li>
+              <li><strong>Eyeshadow:</strong> ${eyeshadow || "N/A"}</li>
+            </ul>`;
+        }
+
+        const dressColors = Array.isArray(rec.dress_colors) ? rec.dress_colors.join(", ") : rec.dress_colors;
+        const jewellery = Array.isArray(rec.jewellery) ? rec.jewellery.join(", ") : rec.jewellery;
+        const dressStyle = Array.isArray(rec.dress_style) ? rec.dress_style.join(", ") : rec.dress_style;
+        const skincare = Array.isArray(rec.skincare) ? rec.skincare.join("<br>") : rec.skincare;
+        const haircare = Array.isArray(rec.haircare) ? rec.haircare.join("<br>") : rec.haircare;
+        const hairstyle = Array.isArray(rec.hairstyle) ? rec.hairstyle.join(", ") : rec.hairstyle;
+
+        resultsList.innerHTML = `
+          <li><strong>Face Shape:</strong> ${faceType}</li>
+          <li><strong>Body Type:</strong> ${bodyType}</li>
+          <li><strong>Hair Texture:</strong> ${hairTexture}</li>
+          <li><strong>Hair Type:</strong> ${hairType}</li>
+          <li><strong>Skin Tone:</strong> ${skinTone}</li>
+          <li><strong>Skin Type:</strong> ${skinType}</li>
+          <li><strong>Undertone:</strong> ${undertone}</li>
+          <li><strong>Makeup Shades:</strong><br>${makeup}</li>
+          <li><strong>Dress Colors:</strong> ${dressColors}</li>
+          <li><strong>Jewelry:</strong> ${jewellery}</li>
+          <li><strong>Dress Style:</strong> ${dressStyle}</li>
+          <li><strong>Hairstyle Tips:</strong> ${hairstyle}</li>
+          <li><strong>Skincare Tips:</strong><br>${skincare}</li>
+          <li><strong>Haircare Tips:</strong><br>${haircare}</li>
+        `;
+
+        resultsDiv.style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        loading.style.display = 'none';
+        alert("Something went wrong while analyzing your photo.");
+      }
+    });
+  </script>
+  <!-- ✅ FIXED SCRIPT END -->
+
+</body>
+</html>
